@@ -207,9 +207,11 @@ void EnvelopeGenerator::clock(cycle_count delta_t)
       state = ATTACK;
       hold_zero = false;
       rate_period = rate_counter_period[attack];
+#if defined(RESID_RESET_RATE_COUNTER_ON_ATTACK)
       // Deliberately depart from hardware ADSR wrap delay for consistent attacks.
       rate_counter = 0;
       reset_rate_counter = false;
+#endif
     } else if (next_state == RELEASE) {
       state = RELEASE;
       rate_period = rate_counter_period[release];
@@ -356,9 +358,11 @@ void EnvelopeGenerator::state_change()
         state = ATTACK;
         // The attack register is correctly activated during second cycle of attack phase
         rate_period = rate_counter_period[attack];
+#if defined(RESID_RESET_RATE_COUNTER_ON_ATTACK)
         // Deliberately depart from hardware ADSR wrap delay for consistent attacks.
         rate_counter = 0;
         reset_rate_counter = false;
+#endif
         hold_zero = false;
       }
       break;
