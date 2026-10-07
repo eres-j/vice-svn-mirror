@@ -389,6 +389,10 @@ short EnvelopeGenerator::output()
 {
   // DAC imperfections are emulated by using envelope_counter as an index
   // into a DAC lookup table. readENV() uses envelope_counter directly.
+#if defined(RESID_SUPPRESS_ENVELOPE_LEAKAGE)
+  // Keep active DAC levels unchanged, but silence fully released voices.
+  if (envelope_counter == 0) return 0;
+#endif
   return model_dac[sid_model][envelope_counter];
 }
 
